@@ -1,0 +1,12 @@
+{
+    "!limitnode15": {
+      "image": "avaliableNodes.jpg",
+      "caption": "🟢 Node 15: 500 TON, осталось 120.\nПодробнее внутри",
+      "buttonText": "Запустить фарминг",
+      "buttonUrl": "https://onex.app/node15"
+    },
+    "!datafreenodes": {
+      "image": "dataFreeNodes.jpg",
+      "caption": "📊 Free Nodes:\n- Активных: 128\n- Новых за сутки: 23"
+    }
+  }
