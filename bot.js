@@ -9,7 +9,53 @@ const bot = new TelegramBot(token, { polling: true });
 // 📥 Загружаем команды
 const commands = JSON.parse(fs.readFileSync('./commands.json', 'utf8'));
 
-// 📩 Обработка сообщений
+const adminId = 123456789; // <-- замени на свой Telegram user ID
+
+bot.onText(/^\/addcommand (.+)/, (msg, match) => {
+  if (msg.from.id !== adminId) return;
+  const parts = match[1].split('|').map(s => s.trim());
+  const [cmd, caption, image, buttonText, buttonUrl] = parts;
+
+  if (!cmd || !caption || !image) return bot.sendMessage(msg.chat.id, '❗ Формат: /addcommand !cmd | caption | image.png | [buttonText] | [buttonUrl]');
+
+  commands[cmd] = {
+    image,
+    caption,
+    ...(buttonText && buttonUrl ? { buttonText, buttonUrl } : {})
+  };
+
+  fs.writeFileSync('./commands.json', JSON.stringify(commands, null, 2));
+  bot.sendMessage(msg.chat.id, `✅ Команда ${cmd} добавлена.`);
+});
+
+bot.onText(/^\/editcommand (.+)/, (msg, match) => {
+  if (msg.from.id !== adminId) return;
+  const parts = match[1].split('|').map(s => s.trim());
+  const [cmd, caption, image, buttonText, buttonUrl] = parts;
+
+  if (!commands[cmd]) return bot.sendMessage(msg.chat.id, '⚠️ Команда не найдена.');
+  if (!caption || !image) return bot.sendMessage(msg.chat.id, '❗ Формат: /editcommand !cmd | caption | image.png | [buttonText] | [buttonUrl]');
+
+  commands[cmd] = {
+    image,
+    caption,
+    ...(buttonText && buttonUrl ? { buttonText, buttonUrl } : {})
+  };
+
+  fs.writeFileSync('./commands.json', JSON.stringify(commands, null, 2));
+  bot.sendMessage(msg.chat.id, `✏️ Команда ${cmd} обновлена.`);
+});
+
+bot.onText(/^\/deletecommand (.+)/, (msg, match) => {
+  if (msg.from.id !== adminId) return;
+  const cmd = match[1].trim();
+  if (!commands[cmd]) return bot.sendMessage(msg.chat.id, '⚠️ Команда не найдена.');
+
+  delete commands[cmd];
+  fs.writeFileSync('./commands.json', JSON.stringify(commands, null, 2));
+  bot.sendMessage(msg.chat.id, `🗑️ Команда ${cmd} удалена.`);
+});
+
 bot.on('message', (msg) => {
   const chatType = msg.chat.type;
   const chatId = msg.chat.id;
