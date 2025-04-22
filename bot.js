@@ -9,7 +9,7 @@ const bot = new TelegramBot(token, { polling: true });
 // 📥 Загружаем команды
 const commands = JSON.parse(fs.readFileSync('./commands.json', 'utf8'));
 
-const adminId = 123456789; // <-- замени на свой Telegram user ID
+const adminId = 7236554978; // <-- замени на свой Telegram user ID
 
 bot.onText(/^\/addcommand (.+)/, (msg, match) => {
   if (msg.from.id !== adminId) return;
