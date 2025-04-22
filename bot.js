@@ -30,17 +30,22 @@ bot.on('message', (msg) => {
       return bot.sendMessage(chatId, '⚠️ Ошибка: изображение не найдено.');
     }
 
-    bot.sendPhoto(chatId, fs.createReadStream(imagePath), {
+    const options = {
       caption: caption,
-      parse_mode: 'HTML',
-      reply_markup: {
-        inline_keyboard: [[
-          {
-            text: buttonText,
-            web_app: { url: buttonUrl }
-          }
-        ]]
-      }
-    });
+      parse_mode: 'HTML'
+    };
+
+    if (
+      typeof buttonText === 'string' &&
+      typeof buttonUrl === 'string' &&
+      buttonText.trim() !== '' &&
+      buttonUrl.trim() !== ''
+    ) {
+      options.reply_markup = {
+        inline_keyboard: [[{ text: buttonText.trim(), url: buttonUrl.trim() }]]
+      };
+    }
+
+    bot.sendPhoto(chatId, fs.createReadStream(imagePath), options);
   }
 });
