@@ -13,6 +13,7 @@ const adminId = 7236554978; // <-- замени на свой Telegram user ID
 
 bot.onText(/^\/addcommand (.+)/, (msg, match) => {
   if (msg.from.id !== adminId) return;
+  if (msg.chat.type !== 'private') return;
   const parts = match[1].split('|').map(s => s.trim());
   const [cmd, caption, image, buttonText, buttonUrl] = parts;
 
@@ -30,6 +31,7 @@ bot.onText(/^\/addcommand (.+)/, (msg, match) => {
 
 bot.onText(/^\/editcommand (.+)/, (msg, match) => {
   if (msg.from.id !== adminId) return;
+  if (msg.chat.type !== 'private') return;
   const parts = match[1].split('|').map(s => s.trim());
   const [cmd, caption, image, buttonText, buttonUrl] = parts;
 
@@ -48,6 +50,7 @@ bot.onText(/^\/editcommand (.+)/, (msg, match) => {
 
 bot.onText(/^\/deletecommand (.+)/, (msg, match) => {
   if (msg.from.id !== adminId) return;
+  if (msg.chat.type !== 'private') return;
   const cmd = match[1].trim();
   if (!commands[cmd]) return bot.sendMessage(msg.chat.id, '⚠️ Команда не найдена.');
 
@@ -59,6 +62,7 @@ bot.onText(/^\/deletecommand (.+)/, (msg, match) => {
 // 🔧 Изменить описание
 bot.onText(/^\/editcaption (.+)/, (msg, match) => {
     if (msg.from.id !== adminId) return;
+    if (msg.chat.type !== 'private') return;
     const [cmd, newCaption] = match[1].split('|').map(x => x.trim());
     if (!commands[cmd]) return bot.sendMessage(msg.chat.id, '⚠️ Команда не найдена.');
     if (!newCaption) return bot.sendMessage(msg.chat.id, '❗ Укажите описание.');
@@ -71,6 +75,7 @@ bot.onText(/^\/editcaption (.+)/, (msg, match) => {
   // 🔧 Изменить картинку
   bot.onText(/^\/editimage (.+)/, (msg, match) => {
     if (msg.from.id !== adminId) return;
+    if (msg.chat.type !== 'private') return;
     const [cmd, newImage] = match[1].split('|').map(x => x.trim());
     if (!commands[cmd]) return bot.sendMessage(msg.chat.id, '⚠️ Команда не найдена.');
     if (!newImage) return bot.sendMessage(msg.chat.id, '❗ Укажите имя файла изображения.');
@@ -83,6 +88,7 @@ bot.onText(/^\/editcaption (.+)/, (msg, match) => {
   // 🔧 Изменить кнопку
   bot.onText(/^\/editbutton (.+)/, (msg, match) => {
     if (msg.from.id !== adminId) return;
+    if (msg.chat.type !== 'private') return;
     const [cmd, buttonText, buttonUrl] = match[1].split('|').map(x => x.trim());
     if (!commands[cmd]) return bot.sendMessage(msg.chat.id, '⚠️ Команда не найдена.');
     if (!buttonText || !buttonUrl) return bot.sendMessage(msg.chat.id, '❗ Укажите текст и ссылку для кнопки.');
@@ -96,6 +102,7 @@ bot.onText(/^\/editcaption (.+)/, (msg, match) => {
   // 🗑️ Удалить кнопку
   bot.onText(/^\/removebutton (.+)/, (msg, match) => {
     if (msg.from.id !== adminId) return;
+    if (msg.chat.type !== 'private') return;
     const cmd = match[1].trim();
     if (!commands[cmd]) return bot.sendMessage(msg.chat.id, '⚠️ Команда не найдена.');
   
@@ -106,6 +113,8 @@ bot.onText(/^\/editcaption (.+)/, (msg, match) => {
   });
 
 bot.onText(/^\/help$/, (msg) => {
+  if (msg.from.id !== adminId) return;
+  if (msg.chat.type !== 'private') return;
   const helpText = `
 📌 <b>Команды администратора:</b>
 /addcommand !cmd | caption | image.png | [buttonText] | [buttonUrl] — добавить новую команду
