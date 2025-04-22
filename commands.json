@@ -1,6 +1,6 @@
 {
     "!limitnode15": {
-      "image": "avaliableNodes.jpg",
+      "image": "avaliableNodes.png",
       "caption": "🟢 Node 15: 500 TON, осталось 120.\nПодробнее внутри",
       "buttonText": "Запустить фарминг",
       "buttonUrl": "https://onex.app/node15"
